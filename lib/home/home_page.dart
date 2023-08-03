@@ -1,6 +1,9 @@
+import 'package:endurance/dashboard/login_page.dart';
 import 'package:endurance/preset/preset_list/preset_list_page.dart';
 import 'package:endurance/dashboard/dashboard_page.dart';
+import 'package:endurance/theme/Settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:endurance/timer/timer_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -15,6 +18,9 @@ class _HomePageState extends State<HomePage> {
   final screens = [
     const DashboardPage(),
     const PresetListPage(),
+    TimerPage(),
+    SettingsPage(),
+    LoginPage(),
     const Center(child: Text('Perform preset')),
     const Center(child: Text('Settings')),
   ];

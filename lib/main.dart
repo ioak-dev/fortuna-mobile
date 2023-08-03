@@ -6,9 +6,20 @@ import 'package:endurance/preset/preset_view/preset_view_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endurance/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:endurance/home/loading.dart';
+import 'package:provider/provider.dart';
+import 'package:endurance/theme/ThemeManager.dart';
+import 'package:endurance/theme/Settings_page.dart';
+
+
 
 void main() {
-  runApp(const EnduranceApp());
+  runApp(
+      ChangeNotifierProvider(
+      create: (_) => ThemeManager(),
+  child: EnduranceApp(),
+      ),
+  );
 }
 
 class EnduranceApp extends StatelessWidget {
@@ -25,18 +36,14 @@ class EnduranceApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Endurance',
-          theme: ThemeData(
-            primarySwatch: Colors.blueGrey,
-          ),
-          darkTheme: ThemeData(
-            primarySwatch: Colors.blueGrey,
-            brightness: Brightness.dark,
-            primaryColor: Colors.blueGrey,
-          ),
-          themeMode: ThemeMode.system,
+          theme: Provider.of<ThemeManager>(context).themeData,
+          darkTheme: Provider.of<ThemeManager>(context).darkThemeData,
+          themeMode: Provider.of<ThemeManager>(context).currentThemeMode,
           initialRoute: '/',
           routes: {
-            '/': (context) => const HomePage(title: 'Home Page'),
+            "/" : (context) => LoadingPage(),
+            "/home" : (context) => HomePage(title: 'Home Page'),
+            // '/': (context) => const HomePage(title: 'Home Page'),
             '/preset/create': (context) => const CreatePresetPage()
           },
         ));

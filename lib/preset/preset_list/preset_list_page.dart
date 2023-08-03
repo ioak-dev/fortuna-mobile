@@ -59,7 +59,8 @@ class _PresetListPageState extends State<PresetListPage> {
                   openAddPage();
                 },
                 child: Icon(Icons.add),
-              ))
+              )
+          )
         ],
       ),
       body: Container(
