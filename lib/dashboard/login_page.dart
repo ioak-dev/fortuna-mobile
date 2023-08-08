@@ -112,12 +112,23 @@ class _LoginPageState extends State<LoginPage> {
     String username = _usernameController.text.trim();
     String password = _passwordController.text.trim();
 
-    bool isAuthenticated = await _authService.login(username, password);
+    String? authenticatedUsername = await _authService.login(username, password);
 
-    if (isAuthenticated) {
+    if (authenticatedUsername == "Chinmay" && password == "Cr7") {
+      // Allow hardcoded authentication
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(title: 'Home Page')),
+        MaterialPageRoute(
+          builder: (context) => HomePage(title: 'Home Page', username: username),
+        ),
+      );
+    } else if (authenticatedUsername != null) {
+      // Authenticate via API
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(title: 'Home Page', username: authenticatedUsername),
+        ),
       );
     } else {
       setState(() {
@@ -126,6 +137,13 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

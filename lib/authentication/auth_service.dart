@@ -12,7 +12,12 @@ class AuthService {
   static const String apiUrl = 'https://api.ioak.io:8010/api';
   static const String apiKey = 'fc2076f5-bee6-4b94-974f-5e110495b048';
 
-  Future<bool> login(String username, String password) async {
+  Future<String?> login(String username, String password) async {
+    if (username == "Chinmay" && password == "Cr7") {
+      // Allow hardcoded authentication
+      return username;
+    }
+
     final response = await http.post(
       Uri.parse('$apiUrl/login'),
       headers: {
@@ -26,13 +31,14 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
-      // Successfully authenticated
-      return true;
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String authenticatedUsername = responseData['username'];
+      return authenticatedUsername;
     } else {
       await Future.delayed(Duration(seconds: 10));
-     return username == "Chinmay" && password == "Cr7";
-
+      return null; // Return null for unsuccessful authentication
     }
   }
 }
+
 
