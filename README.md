@@ -1,4 +1,4 @@
-# Endurance - 1.0
+# endurance
 
 Endurance
 

@@ -1,9 +1,13 @@
 import 'package:endurance/dashboard/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:endurance/authentication/auth_service.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  final String username;
+  const DashboardPage({Key? key, required this.username}) : super(key: key);
+  // const DashboardPage({Key? key}) : super(key: key);
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -20,9 +24,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if the user is authenticated, if not, show the LoginPage.
-    // Replace 'isUserAuthenticated' with your actual authentication check logic.
-    bool isUserAuthenticated = true; // Change to 'false' to simulate an unauthenticated user.
+
+    bool isUserAuthenticated = true;
     if (!isUserAuthenticated) {
       return LoginPage();
     }
@@ -30,7 +33,6 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
-        // Uncomment the code below if you want to use the NewGradientAppBar
         // appBar: PreferredSize(
         //   preferredSize: Size.fromHeight(0),
         //   child: NewGradientAppBar(
@@ -53,28 +55,30 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // First Candidate
+              // name :>
               Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(50),
-                ),
                 alignment: Alignment.center,
-                child: Text("Candidate 1", style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: TyperAnimatedTextKit(
+                  text: ['Hi, ${widget.username}!'],
+                  textStyle: TextStyle(
+
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                  speed: Duration(milliseconds: 100),
+                  isRepeatingAnimation: false,
+                ),
               ),
+
+
               SizedBox(height: 20),
               //2nd
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                alignment: Alignment.center,
-                child: Text("Candidate 2", style: TextStyle(color: Colors.white, fontSize: 20)),
+              CircleAvatar(
+                radius: 120,
+                backgroundImage: AssetImage("images/Chinmay_Sharma.jpg"),
               ),
               SizedBox(height: 20),
+
 
               Container(
                 height: 50,

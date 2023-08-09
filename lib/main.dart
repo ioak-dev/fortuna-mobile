@@ -42,7 +42,7 @@ class EnduranceApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             "/" : (context) => LoadingPage(),
-            "/home" : (context) => HomePage(title: 'Home Page'),
+            "/home" : (context) => HomePage(title: 'Home Page', username: 'your_username_here',),
             // '/': (context) => const HomePage(title: 'Home Page'),
             '/preset/create': (context) => const CreatePresetPage()
           },
