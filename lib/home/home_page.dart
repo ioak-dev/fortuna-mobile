@@ -4,7 +4,7 @@ import 'package:endurance/dashboard/dashboard_page.dart';
 import 'package:endurance/theme/Settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:endurance/timer/timer_page.dart';
-//
+import 'package:endurance/expnses/Expenses_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title, required this.username}) : super(key: key);
   final String title;
@@ -95,6 +95,7 @@ class _HomePageState extends State<HomePage> {
       const PresetListPage(),
       TimerPage(),
       SettingsPage(),
+      ExpensesPage(),
       LoginPage(),
       const Center(child: Text('Perform preset')),
       const Center(child: Text('Settings')),
@@ -124,9 +125,14 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.timer_outlined),
             label: 'Timer',
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet),
+            label: 'Expenses',
           ),
         ],
       ),
@@ -139,4 +145,5 @@ class _HomePageState extends State<HomePage> {
     });
   }
 }
+
 

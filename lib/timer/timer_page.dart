@@ -74,7 +74,13 @@ class _TimerWidgetState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return MaterialApp(
+        title: 'Timer',
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Timer'),
+          ),
+            body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset("images/timer.gif",height: 180,width: 180,),
@@ -122,6 +128,8 @@ class _TimerWidgetState extends State<TimerPage> {
             ],
           ),
       ],
+    ),
+    ),
     );
   }
 }
