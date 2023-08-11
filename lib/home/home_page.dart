@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
       const PresetListPage(),
       TimerPage(),
       SettingsPage(),
-      ExpensesPage(),
+      ExpensesPage(username: widget.username),
       LoginPage(),
       const Center(child: Text('Perform preset')),
       const Center(child: Text('Settings')),
