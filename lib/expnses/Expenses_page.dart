@@ -63,8 +63,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
 
                 return AlertDialog(
                   title: Text('Add Expense'),
-                  content: Container(
-                    width: MediaQuery.of(context).size.width * 0.3,
+                  content: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -126,7 +125,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(height: 7),
+            SizedBox(height: 20),
             Container(
               alignment: Alignment.center,
               child: TyperAnimatedTextKit(
@@ -135,11 +134,11 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                   color: Colors.lightBlueAccent,
                   fontSize: 24,
                 ),
-                speed: Duration(milliseconds: 300),
+                speed: Duration(milliseconds: 100),
                 isRepeatingAnimation: false,
               ),
             ),
-            SizedBox(height: 7),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -147,7 +146,6 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                 _buildCategoryButton('Miscellaneous', Colors.orange, Icons.dashboard),
               ],
             ),
-            SizedBox(height: 1),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -155,7 +153,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                 _buildCategoryButton('Shopping', Colors.blue, Icons.shopping_cart),
               ],
             ),
-            SizedBox(height: 1),
+            SizedBox(height: 10),
             Center(
               child: Text(
                 'Total Items: ${_expenses.length}',
@@ -178,7 +176,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                     subtitle: Text('₹${expense.amount.toStringAsFixed(2)}'),
                     leading: Container(
                       width: 10,
-                      height: 30,
+                      height: 40,
                       color: expense.categoryColor,
                     ),
                     trailing: IconButton(
@@ -197,8 +195,3 @@ class _ExpensePageAppState extends State<ExpensesPage> {
     );
   }
 }
-
-
-// void main() {
-//   runApp(MaterialApp(home: Scaffold(body: ExpensesPage(username: 'Test'))));
-// }
