@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/ThemeManager.dart';
 
 class TimerPage extends StatefulWidget {
   // const TimerPage({Key? key}) : super(key: key);
@@ -75,6 +78,7 @@ class _TimerWidgetState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: Provider.of<ThemeManager>(context).themeData,
         title: 'Timer',
         home: Scaffold(
           appBar: AppBar(

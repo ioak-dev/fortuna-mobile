@@ -24,8 +24,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUserAuthenticated = true; // You should handle the actual authentication state
+    bool isChinmay = widget.username == "Chinmay";
 
-    bool isUserAuthenticated = true;
     if (!isUserAuthenticated) {
       return LoginPage();
     }
@@ -33,20 +34,14 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
-        // appBar: PreferredSize(
-        //   preferredSize: Size.fromHeight(0),
-        //   child: NewGradientAppBar(
-        //     title: Text('Dashboard'),
-        //     gradient: LinearGradient(
-        //       colors: [
-        //         Colors.blueGrey,
-        //         Colors.grey,
-        //       ],
-        //       begin: Alignment.topCenter,
-        //       end: Alignment.bottomCenter,
-        //     ),
-        //   ),
-        // ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -55,51 +50,32 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // name :>
               Container(
                 alignment: Alignment.center,
                 child: TyperAnimatedTextKit(
                   text: ['Hi, ${widget.username}!'],
                   textStyle: TextStyle(
-
-                    color: Colors.white,
+                    color: Colors.lightBlueAccent,
                     fontSize: 24,
                   ),
-                  speed: Duration(milliseconds: 100),
+                  speed: Duration(milliseconds: 250),
                   isRepeatingAnimation: false,
                 ),
               ),
-
-
               SizedBox(height: 20),
-              //2nd
-              CircleAvatar(
-                radius: 120,
-                backgroundImage: AssetImage("images/Chinmay_Sharma.jpg"),
-              ),
-              SizedBox(height: 20),
-
-
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(50), // Half of the height makes it oval
+              // Conditionally show CircleAvatar if the username is "Chinmay"
+              if (isChinmay)
+                CircleAvatar(
+                  radius: 120,
+                  backgroundImage: AssetImage("images/Chinmay_Sharma.jpg"),
                 ),
-                alignment: Alignment.center,
-                child: Text("Candidate 3", style: TextStyle(color: Colors.white, fontSize: 20)),
-              ),
-              SizedBox(height: 20),
-
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(50), // Half of the height makes it oval
+              if (!isChinmay)
+                Icon(
+                  Icons.person,
+                  size: 120,
+                  color: Colors.grey,
                 ),
-                alignment: Alignment.center,
-                child: Text("Candidate 4", style: TextStyle(color: Colors.white, fontSize: 20)),
-              ),
+              SizedBox(height: 20),
               SizedBox(height: 20),
             ],
           ),
@@ -107,4 +83,8 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(home: Scaffold(body: DashboardPage(username: 'Chinmay'))));
 }

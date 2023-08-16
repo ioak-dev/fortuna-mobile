@@ -13,8 +13,8 @@ class AuthService {
   static const String apiKey = 'fc2076f5-bee6-4b94-974f-5e110495b048';
 
   Future<String?> login(String username, String password) async {
-    if (username == "Chinmay" && password == "Cr7") {
-      // Allow hardcoded authentication
+    if ((username == "Chinmay" && password == "Cr7") || (username == "admin" && password == "admin")) {
+      // Allow hardcoded authentication for "Chinmay" and "admin"
       return username;
     }
 
