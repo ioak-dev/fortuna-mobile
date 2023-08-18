@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 import '../theme/ThemeManager.dart';
 
+import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:provider/provider.dart';
+
 void main() {
-  runApp(ExpensesPage(username: 'username'));
+  runApp(ExpensesApp());
 }
 
 class Expenses {
@@ -14,8 +18,18 @@ class Expenses {
   final String categoryLabel;
   final Color categoryColor;
   final IconData categoryIcon;
+  final DateTime expenseDate;
 
-  Expenses(this.title, this.amount, this.categoryLabel, this.categoryColor, this.categoryIcon);
+  Expenses(this.title, this.amount, this.categoryLabel, this.categoryColor, this.categoryIcon, this.expenseDate);
+}
+
+class ExpensesApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ExpensesPage(username: 'username'),
+    );
+  }
 }
 
 class ExpensesPage extends StatefulWidget {
@@ -30,9 +44,9 @@ class ExpensesPage extends StatefulWidget {
 class _ExpensePageAppState extends State<ExpensesPage> {
   final List<Expenses> _expenses = [];
 
-  void _addExpense(String title, double amount, String categoryLabel, Color categoryColor, IconData categoryIcon) {
+  void _addExpense(String title, double amount, String categoryLabel, Color categoryColor, IconData categoryIcon, DateTime expenseDate) {
     setState(() {
-      _expenses.add(Expenses(title, amount, categoryLabel, categoryColor, categoryIcon));
+      _expenses.add(Expenses(title, amount, categoryLabel, categoryColor, categoryIcon, expenseDate));
     });
   }
 
@@ -51,6 +65,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
   }
 
   Widget _buildCategoryButton(String categoryName, Color categoryColor, IconData categoryIcon) {
+    DateTime selectedDate = DateTime.now();
     return Column(
       children: [
         ElevatedButton.icon(
@@ -76,6 +91,24 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                           keyboardType: TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(labelText: 'Amount'),
                         ),
+                        TextButton.icon(
+                          onPressed: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: selectedDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                            );
+
+                            if (pickedDate != null) {
+                              setState(() {
+                                selectedDate = pickedDate;
+                              });
+                            }
+                          },
+                          icon: Icon(Icons.calendar_today),
+                          label: Text('Select Date'),
+                        ),
                       ],
                     ),
                   ),
@@ -92,7 +125,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                         double amount = double.tryParse(amountController.text) ?? 0.0;
 
                         if (title.isNotEmpty && amount > 0) {
-                          _addExpense(title, amount, categoryName, categoryColor, categoryIcon);
+                          _addExpense(title, amount, categoryName, categoryColor, categoryIcon, selectedDate);
                           Navigator.of(context).pop();
                         }
                       },
@@ -108,89 +141,98 @@ class _ExpensePageAppState extends State<ExpensesPage> {
           style: ElevatedButton.styleFrom(primary: categoryColor),
         ),
         SizedBox(height: 10),
+        // Text(
+        //   'Selected Date: ${selectedDate.toLocal()}',
+        //   style: TextStyle(fontSize: 7, color: Colors.grey),
+        // ),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: Provider.of<ThemeManager>(context).themeData,
-      title: 'Expense Tracker',
-      home: Scaffold(
-          resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text('Expense Tracker'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 20),
-            Container(
-              alignment: Alignment.center,
-              child: TyperAnimatedTextKit(
-                text: ['Hi, ${widget.username}!'],
-                textStyle: TextStyle(
-                  color: Colors.lightBlueAccent,
-                  fontSize: 24,
-                ),
-                speed: Duration(milliseconds: 100),
-                isRepeatingAnimation: false,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Expense Tracker'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(height: 20),
+          Container(
+            alignment: Alignment.center,
+            child: TyperAnimatedTextKit(
+              text: ['Hi, ${widget.username}!'],
+              textStyle: TextStyle(
+                color: Colors.lightBlueAccent,
+                fontSize: 24,
               ),
+              speed: Duration(milliseconds: 100),
+              isRepeatingAnimation: false,
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildCategoryButton('Food', Colors.green, Icons.fastfood),
-                _buildCategoryButton('Miscellaneous', Colors.orange, Icons.dashboard),
-              ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildCategoryButton('Food', Colors.green, Icons.fastfood),
+              _buildCategoryButton('Miscellaneous', Colors.orange, Icons.dashboard),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildCategoryButton('Entertainment', Colors.purple, Icons.movie),
+              _buildCategoryButton('Shopping', Colors.blue, Icons.shopping_cart),
+            ],
+          ),
+          SizedBox(height: 10),
+          Center(
+            child: Text(
+              'Total Items: ${_expenses.length}',
+              style: TextStyle(fontSize: 18),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildCategoryButton('Entertainment', Colors.purple, Icons.movie),
-                _buildCategoryButton('Shopping', Colors.blue, Icons.shopping_cart),
-              ],
+          ),
+          Center(
+            child: Text(
+              'Total Cost: ₹${_calculateTotalAmount().toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 10),
-            Center(
-              child: Text(
-                'Total Items: ${_expenses.length}',
-                style: TextStyle(fontSize: 18),
-              ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _expenses.length,
+              itemBuilder: (context, index) {
+                final expense = _expenses[index];
+                return ListTile(
+                  title: Text(expense.title),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('₹${expense.amount.toStringAsFixed(2)}'),
+                      Text(
+                        'Selected Date: ${expense.expenseDate.toLocal()}',
+                        style: TextStyle(fontSize: 14, color: Colors.lightBlueAccent),
+                      ),
+                    ],
+                  ),
+                  leading: Container(
+                    width: 10,
+                    height: 40,
+                    color: expense.categoryColor,
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _removeExpenses(index);
+                    },
+                  ),
+                );
+              },
             ),
-            Center(
-              child: Text(
-                'Total Cost: ₹${_calculateTotalAmount().toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _expenses.length,
-                itemBuilder: (context, index) {
-                  final expense = _expenses[index];
-                  return ListTile(
-                    title: Text(expense.title),
-                    subtitle: Text('₹${expense.amount.toStringAsFixed(2)}'),
-                    leading: Container(
-                      width: 10,
-                      height: 40,
-                      color: expense.categoryColor,
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _removeExpenses(index);
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
