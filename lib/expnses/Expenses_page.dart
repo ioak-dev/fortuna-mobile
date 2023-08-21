@@ -7,6 +7,8 @@ import '../theme/ThemeManager.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
 
 void main() {
   runApp(ExpensesApp());
@@ -212,9 +214,10 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                     children: [
                       Text('₹${expense.amount.toStringAsFixed(2)}'),
                       Text(
-                        'Selected Date: ${expense.expenseDate.toLocal()}',
+                        'Selected Date: ${DateFormat('MMMM dd, yyyy').format(expense.expenseDate)}',
                         style: TextStyle(fontSize: 14, color: Colors.lightBlueAccent),
                       ),
+
                     ],
                   ),
                   leading: Container(
