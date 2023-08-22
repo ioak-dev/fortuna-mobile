@@ -134,6 +134,11 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.account_balance_wallet),
             label: 'Expenses',
           ),
+          // BottomNavigationBarItem(
+            // icon: Icon(Icons.wallet_outlined),
+            // label: 'Total Summary',
+          // ),
+
         ],
       ),
     );

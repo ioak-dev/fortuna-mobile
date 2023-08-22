@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:endurance/theme/ThemeManager.dart';
 import 'package:endurance/theme/Settings_page.dart';
 import 'package:endurance/expnses/Expenses_page.dart';
+import 'package:endurance/total_summary.dart';
 
 
 
