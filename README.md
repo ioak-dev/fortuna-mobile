@@ -6,6 +6,7 @@ Endurance
 
 **Step-1** - Run Fortuna-User-Authentication using the same steps as per repo
 
+
 **Step-2** - Clone this repo to your desktop or laptop. (App Name-Endurance) main branch name Fortuna Mobile main
 
 **Step-3** - Now in android studio/vs.code run the main.dart file 
