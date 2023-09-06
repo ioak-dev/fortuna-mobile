@@ -9,7 +9,7 @@ class ThemeManager with ChangeNotifier {
 
   ThemeManager() {
     _currentTheme = AppTheme.Light;
-    _themeData = ThemeData.light(); // Set the default theme
+    _themeData = ThemeData.light(useMaterial3: true); // Set the default theme
     _loadTheme();
   }
 
@@ -30,10 +30,10 @@ class ThemeManager with ChangeNotifier {
   void _applyTheme() {
     switch (_currentTheme) {
       case AppTheme.Light:
-        _themeData = ThemeData.light();
+        _themeData = ThemeData.light(useMaterial3: true);
         break;
       case AppTheme.Dark:
-        _themeData = ThemeData.dark();
+        _themeData = ThemeData.dark(useMaterial3: true);
         break;
     }
     notifyListeners();
