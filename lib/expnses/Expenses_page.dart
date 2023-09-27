@@ -112,22 +112,6 @@ class _ExpensePageAppState extends State<ExpensesPage> {
               isRepeatingAnimation: false,
             ),
           ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildCategoryButton('Food', Colors.green, Icons.fastfood),
-              _buildCategoryButton('Miscellaneous', Colors.orange, Icons.dashboard),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildCategoryButton('Entertainment', Colors.purple, Icons.movie),
-              _buildCategoryButton('Shopping', Colors.blue, Icons.shopping_cart),
-            ],
-          ),
-          SizedBox(height: 10),
           Center(
             child: Text(
               'Total Items: ${_expenses.length}',
