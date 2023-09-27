@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:provider/provider.dart';
 
-import '../theme/ThemeManager.dart';
-
-import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:endurance/expnses/add_expense_dialog.dart';
-import '../total_summary.dart';
-import 'add_expense_dialog.dart';
 
 class Expenses {
-  final String title;
   final double amount;
-  final String categoryLabel;
-  final Color categoryColor;
-  final IconData categoryIcon;
-  final DateTime expenseDate;
   final String description;
+  final DateTime selectedDate;
+  final String notes;
+  final String tags;
 
-  Expenses(this.title, this.amount, this.categoryLabel, this.categoryColor,
-      this.categoryIcon, this.expenseDate, this.description);
+  Expenses(
+      {required this.amount,
+      required this.tags,
+      required this.notes,
+      required this.selectedDate,
+      required this.description});
 }
 
 class ExpensesPage extends StatefulWidget {
@@ -37,14 +31,14 @@ class ExpensesPage extends StatefulWidget {
 class _ExpensePageAppState extends State<ExpensesPage> {
   final List<Expenses> _expenses = [];
 
-  void _addExpense(String title, double amount, String categoryLabel,
-      Color categoryColor, IconData categoryIcon, DateTime expenseDate,
-      {String description = ''}) {
+  void _addExpense(Map result) {
     setState(() {
-      _expenses.add(
-        Expenses(title, amount, categoryLabel, categoryColor, categoryIcon,
-            expenseDate, description),
-      );
+      _expenses.add(Expenses(
+          amount: result['amount'],
+          description: result['description'],
+          selectedDate: result['selectedDate'],
+          notes: result['notes'],
+          tags: result['tags']));
     });
   }
 
@@ -73,17 +67,9 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                 return AddExpenseDialog();
               },
             ).then((result) {
-              if (result != null)
-              { print(result);
-                _addExpense(
-                  result['title'],
-                  result['amount'],
-                  result['categoryName'],
-                  result['categoryColor'],
-                  result['categoryIcon'],
-                  result['selectedDate'],
-                  description: result['description'],
-                );
+              if (result != null) {
+                print(result);
+                _addExpense(result);
               }
             });
           },
@@ -99,7 +85,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
           //   totalItems: _expenses.length,
           //   totalCost: _calculateTotalAmount(),
           // ),
-          SizedBox(height: 20),
+          // SizedBox(height: 20),
           Container(
             alignment: Alignment.center,
             child: TyperAnimatedTextKit(
@@ -130,13 +116,13 @@ class _ExpensePageAppState extends State<ExpensesPage> {
               itemBuilder: (context, index) {
                 final expense = _expenses[index];
                 return ListTile(
-                  title: Text(expense.title),
+                  title: Text(expense.description),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('₹${expense.amount.toStringAsFixed(2)}'),
                       Text(
-                        'Selected Date: ${DateFormat('MMMM dd, yyyy').format(expense.expenseDate)}',
+                        'Selected Date: ${DateFormat('MMMM dd, yyyy').format(expense.selectedDate)}',
                         style: TextStyle(
                             fontSize: 14, color: Colors.lightBlueAccent),
                       ),
@@ -145,14 +131,14 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                         Text(
                           'Description: ${expense.description}',
                           style:
-                          TextStyle(fontSize: 14, color: Colors.tealAccent),
+                              TextStyle(fontSize: 14, color: Colors.tealAccent),
                         ),
                     ],
                   ),
                   leading: Container(
                     width: 10,
                     height: 40,
-                    color: expense.categoryColor,
+                    // color: expense.categoryColor,
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
