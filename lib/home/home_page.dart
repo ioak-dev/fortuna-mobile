@@ -115,18 +115,18 @@ class _HomePageState extends State<HomePage> {
         showSelectedLabels: true,
         showUnselectedLabels: false,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.graphic_eq),
-            label: 'Feed',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.graphic_eq),
+          //   label: 'Feed',
+          // ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.list),
           //   label: 'Preset list',
           // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer_outlined),
-            label: 'Timer',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.timer_outlined),
+          //   label: 'Timer',
+          // ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
