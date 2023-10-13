@@ -24,16 +24,16 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.white60,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("images/logo.png",height: 180,width: 180,),
+            Image.asset("images/logo.png",height: 180,width: 200,),
 
             SizedBox(height: 16.0),
             SpinKitFadingCube(
-              color: Colors.blueAccent,
+              color: Colors.black,
               size: 40.0,
             ),
           ],

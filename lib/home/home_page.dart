@@ -93,11 +93,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     screens = [
-      DashboardPage(username: widget.username),
-      const PresetListPage(),
-      TimerPage(),
-      SettingsPage(),
+      // DashboardPage(username: widget.username),
+      // const PresetListPage(),
+      // TimerPage(),
       ExpensesPage(username: widget.username),
+      SettingsPage(),
       LoginPage(),
       const Center(child: Text('Perform preset')),
       const Center(child: Text('Settings')),
@@ -115,27 +115,31 @@ class _HomePageState extends State<HomePage> {
         showSelectedLabels: true,
         showUnselectedLabels: false,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.graphic_eq),
-            label: 'Feed',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Preset list',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer_outlined),
-            label: 'Timer',
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.graphic_eq),
+          //   label: 'Feed',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.list),
+          //   label: 'Preset list',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),
             label: 'Tracker',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.account_balance_wallet),
+          //   label: 'Tracker',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.account_balance_wallet),
+          //   label: 'Tracker',
+          // ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.wallet_outlined),
           //   label: 'Entry',

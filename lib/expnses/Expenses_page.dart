@@ -76,7 +76,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
           label: Text('Add Expense')),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Expense Tracker'),
+        title: Text(''),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

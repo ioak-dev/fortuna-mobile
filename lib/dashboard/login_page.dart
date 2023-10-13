@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(''),
       ),
       body: SafeArea(
         child: Container(
@@ -157,11 +157,12 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("images/logo.png", height: 100, width: 100,),
-              Text(
-                'Login Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              Image.asset("images/logo.png", height: 90, width: 200,),
+              SizedBox(height: 10),
+              // Text(
+              //   'Login Page',
+              //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              // ),
               SizedBox(height: 20),
               TextField(
                 controller: _usernameController,
