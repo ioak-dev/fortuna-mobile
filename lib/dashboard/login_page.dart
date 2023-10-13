@@ -158,10 +158,10 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("images/logo.png", height: 100, width: 100,),
-              Text(
-                'Login Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              // Text(
+              //   'Login Page',
+              //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              // ),
               SizedBox(height: 20),
               TextField(
                 controller: _usernameController,
