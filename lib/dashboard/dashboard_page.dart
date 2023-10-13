@@ -24,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isUserAuthenticated = true; // You should handle the actual authentication state
+    bool isUserAuthenticated = true; // Should handle the actual authentication state
     bool isChinmay = widget.username == "Chinmay";
 
     if (!isUserAuthenticated) {
@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   radius: 120,
                   backgroundImage: AssetImage("images/Chinmay_Sharma.jpg"),
                 ),
-              if (!isChinmay)
+              if (!isChinmay) // not Chinmay Other User
                 Icon(
                   Icons.person,
                   size: 120,
