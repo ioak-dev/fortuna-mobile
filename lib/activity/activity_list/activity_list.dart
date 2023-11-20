@@ -1,8 +1,8 @@
-import 'package:endurance/bloc/activity_bloc.dart';
-import 'package:endurance/database/activity_repository.dart';
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/activity/activity_list/activity_list_item.dart';
-import 'package:endurance/database/model/activity.dart';
+import 'package:Expenso/bloc/activity_bloc.dart';
+import 'package:Expenso/database/activity_repository.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/activity/activity_list/activity_list_item.dart';
+import 'package:Expenso/database/model/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

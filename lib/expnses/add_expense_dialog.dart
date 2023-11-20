@@ -1,9 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import 'Expenses_page.dart';
 import 'category_icons.dart';
 import 'switchtile.dart';
 
@@ -51,6 +51,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
   Color? categoryColor;
 
   DateTime selectedDate = DateTime.now();
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -79,6 +80,23 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     tagController.dispose();
     super.dispose();
   }
+  Future<void> _pickImage() async {
+    PermissionStatus status = await Permission.camera.request();
+
+    if (status.isGranted) {
+      final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } else {
+      print('Camera permission denied');
+    }
+
+}
+
 
   // Widget _buildCategoryButton(
   //     String categoryName, Color categoryColor, IconData categoryIcon) {
@@ -180,6 +198,26 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     return dateTimeFormatter.format(date);
   }
 
+  void floatingAction() {
+    double amount = double.tryParse(amountController.text) ?? 0.0;
+    String description = descriptionController.text;
+    String notes = noteController.text;
+    String tags = tagController.text;
+    // String? categoryLabel = categoryName;
+
+    if (description.isNotEmpty && amount > 0.0) {
+      Navigator.of(context).pop({
+        'amount': amount,
+        'description': description,
+        'selectedDate': selectedDate,
+        'notes': notes,
+        'tags': tags,
+        'image': _selectedImage,
+        // 'categoryLabel': categoryLabel,
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -187,238 +225,118 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
       builder: (context, child) {
         return Transform.scale(
           scale: _animation.value,
-          child: Dialog.fullscreen(
-            // insetPadding: EdgeInsets.all(0),
-            // title: Text('Add Expense'),
-            child: Scaffold(
-              floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () {
-                    double amount =
-                        double.tryParse(amountController.text) ?? 0.0;
-                    String description = descriptionController.text;
-                    String notes = noteController.text;
-                    String tags = tagController.text;
+          child: SimpleDialog(
+            title: const Text('Add Expense'),
+            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+            children: [
+              ListTile(
+                leading: const SizedBox(
+                  child: Icon(Icons.currency_rupee_outlined),
+                ),
+                title: TextField(
+                  controller: amountController,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  decoration: const InputDecoration(
+                    hintText: 'Enter Amount',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const Divider(),
+              // TextField(
+              //   controller: titleController,
+              //   decoration: InputDecoration(hintText: 'Title'),
+              // ),
+              ListTile(
+                leading: const SizedBox(
+                  child: Icon(Icons.notes),
+                ),
+                title: TextField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(
+                    hintText: 'What was this spend for?',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const Divider(),
+              // // TextField(
+              // //   controller: descriptionController, // Add this line
+              // //   decoration: InputDecoration(hintText: 'Description'),
+              // // ),
+              ListTile(
+                leading: const Icon(Icons.calendar_today),
+                title: GestureDetector(
+                  onTap: () async {
+                    final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101),
+                    );
 
-                    if (description.isNotEmpty && amount > 0.0) {
-                      Navigator.of(context).pop({
-                        'amount': amount,
-                        'description': description,
-                        'selectedDate': selectedDate,
-                        'notes': notes,
-                        'tags': tags,
+                    if (pickedDate == null) {
+                      return;
+                    }
+
+                    if (mounted) {
+                      final TimeOfDay? pickedTime = await showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
+
+                      if (pickedTime == null) {
+                        return;
+                      }
+
+                      setState(() {
+                        selectedDate = pickedDate.copyWith(
+                            hour: pickedTime.hour, minute: pickedTime.minute);
                       });
                     }
                   },
-                  label: Row(
-                    children: const [
-                      Icon(Icons.save),
-                      SizedBox(width: 8),
-                      Text('Save')
-                    ],
-                  )),
-              appBar: AppBar(
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
+                  child: DefaultTextStyle(
+                    style: const TextStyle(color: Colors.black),
+                    child: Text(
+                        '${dateAsString(selectedDate)}, ${selectedDate.hour}:${selectedDate.minute}'),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                backgroundColor: Colors.blue,
-                title: const Text(
-                  'Add spending',
-                  style: TextStyle(color: Colors.white),
-                ),
-                // leading:
-                // IconButton(
-                //   onPressed: () =>
-                //       sendData(categoryName, categoryColor, categoryIcon),
-                //   icon: Icon(Icons.close),
-                // ),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      leading: const SizedBox(
-                        height: double.infinity,
-                        child: Icon(Icons.currency_rupee_outlined),
-                      ),
-                      title: TextField(
-                        controller: amountController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        decoration: const InputDecoration(
-                          hintText: 'Enter Amount',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    // TextField(
-                    //   controller: titleController,
-                    //   decoration: InputDecoration(hintText: 'Title'),
-                    // ),
-                    ListTile(
-                      leading: const SizedBox(
-                        height: double.infinity,
-                        child: Icon(Icons.notes),
-                      ),
-                      title: TextField(
-                        controller: descriptionController,
-                        decoration: const InputDecoration(
-                          hintText: 'What was this spend for?',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    // TextField(
-                    //   controller: descriptionController, // Add this line
-                    //   decoration: InputDecoration(hintText: 'Description'),
-                    // ),
-                    ListTile(
-                      leading: const Icon(Icons.calendar_today),
-                      title: GestureDetector(
-                        onTap: () async {
-                          final pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: selectedDate,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2101),
-                          );
-
-                          if (pickedDate == null) {
-                            return;
-                          }
-
-                          if (mounted) {
-                            final TimeOfDay? pickedTime = await showTimePicker(
-                                context: context, initialTime: TimeOfDay.now());
-
-                            if (pickedTime == null) {
-                              return;
-                            }
-
-                            setState(() {
-                              selectedDate = pickedDate.copyWith(
-                                  hour: pickedTime.hour,
-                                  minute: pickedTime.minute);
-                            });
-                          }
-                        },
-                        child: DefaultTextStyle(
-                          style: const TextStyle(color: Colors.black),
-                          child: Text(
-                              '${dateAsString(selectedDate)}, ${selectedDate.hour}:${selectedDate.minute}'),
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    const ListTile(
-                      leading: Icon(Icons.category),
-                      title: Text('Category'),
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: GridView(
-                        scrollDirection: Axis.vertical,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4),
-                        children: categories,
-                      ),
-                    ),
-                    const Divider(),
-                    SwitchTile(
-                      leading: const Icon(Icons.account_balance_wallet_rounded),
-                      initState: isCountedInTotalSpends,
-                      onChanged: (value) => setState(() {
-                        isCountedInTotalSpends = !isCountedInTotalSpends;
-                      }),
-                      title: const Text('Expense'),
-                      trueDescription:
-                          const Text('Will be counted in total spends'),
-                      falseDescription:
-                          const Text('Will not be counted in total spends'),
-                    ),
-                    const Divider(),
-                    ListTile(
-                      leading: const SizedBox(
-                        height: double.infinity,
-                        child: Icon(Icons.edit),
-                      ),
-                      title: TextField(
-                        controller: noteController,
-                        decoration: const InputDecoration(
-                          hintText: 'Add a note',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const SizedBox(
-                        height: double.infinity,
-                        child: Icon(Icons.tag),
-                      ),
-                      title: TextField(
-                        controller: tagController,
-                        decoration: const InputDecoration(
-                          hintText: 'Tag your spends',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    const ListTile(
-                      leading: SizedBox(
-                        height: double.infinity,
-                        child: Icon(Icons.image),
-                      ),
-                      title: Text(
-                        'Add a photo of receipt or warranty',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //     _buildCategoryButton(
-                    //         'Food', Colors.green, Icons.fastfood),
-                    //     _buildCategoryButton(
-                    //         'Miscellaneous', Colors.orange, Icons.dashboard),
-                    //   ],
-                    // ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //     _buildCategoryButton(
-                    //         'Entertainment', Colors.purple, Icons.movie),
-                    //     _buildCategoryButton(
-                    //         'Shopping', Colors.blue, Icons.shopping_cart),
-                    //   ],
-                    // ),
-                    // // SizedBox(height: 1),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       _buildCategoryButton(
-                    //           'Add New', Colors.lightBlueAccent, Icons.add),
-                    //       _buildCategoryButton('Medical', Colors.green,
-                    //           Icons.medical_information),
-                    //     ]),
-                  ],
                 ),
               ),
-            ),
+              const Divider(),
+              const ListTile(
+                leading: Icon(Icons.category),
+                title: Text('Category'),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 9 / 10,
+                child: GridView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4),
+                  children: categories,
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: Text('Add Image'),
+                onTap: () async => await _pickImage(),
+              ),
 
-            // backgroundColor: widget.categoryColor,
+              _selectedImage != null
+                  ? Image.file(_selectedImage!, height: 100, width: 100)
+                  : Container(),
+              const Divider(),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 64.0),
+                child: ElevatedButton(
+                  onPressed: () => floatingAction(),
+                  child: const Text('Save'),
+                ),
+              )
+            ],
           ),
         );
       },

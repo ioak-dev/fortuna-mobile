@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:endurance/database/model/preset.dart';
-import 'package:endurance/database/preset_repository.dart';
+import 'package:Expenso/database/model/preset.dart';
+import 'package:Expenso/database/preset_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'preset_event.dart';

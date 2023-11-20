@@ -1,5 +1,5 @@
-import 'package:endurance/database/model/activity.dart';
-import 'package:endurance/database/model/preset.dart';
+import 'package:Expenso/database/model/activity.dart';
+import 'package:Expenso/database/model/preset.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

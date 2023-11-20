@@ -38,9 +38,12 @@ class _CategoryIconState extends State<CategoryIcon> {
                 widget.icon,
                 color: widget.color,
               ),
-              Text(widget.label,
-                  style:
-                      TextStyle()), // Todo: Use a condensed font/ make font condensed
+              Text(
+                widget.label,
+                textScaleFactor: 0.7,
+                textAlign: TextAlign.center,
+                style: TextStyle(),
+              ), // Todo: Use a condensed font/ make font condensed
             ]),
       ),
     );

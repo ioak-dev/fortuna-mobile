@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:endurance/bloc/activity_bloc.dart';
-import 'package:endurance/bloc/preset_bloc.dart';
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/database/model/activity.dart';
-import 'package:endurance/database/activity_repository.dart';
-import 'package:endurance/database/model/preset.dart';
-import 'package:endurance/shared/utils.dart';
+import 'package:Expenso/bloc/activity_bloc.dart';
+import 'package:Expenso/bloc/preset_bloc.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/database/model/activity.dart';
+import 'package:Expenso/database/activity_repository.dart';
+import 'package:Expenso/database/model/preset.dart';
+import 'package:Expenso/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';

@@ -1,5 +1,5 @@
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/database/model/activity.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/database/model/activity.dart';
 
 class ActivityRepository {
 

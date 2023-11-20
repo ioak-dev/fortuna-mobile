@@ -1,9 +1,9 @@
-import 'package:endurance/home/home_page.dart';
+import 'package:Expenso/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:endurance/dashboard/dashboard_page.dart';
-import 'package:endurance/home/home_page.dart';
-import 'package:endurance/dashboard/login_page.dart';
+import 'package:Expenso/dashboard/dashboard_page.dart';
+import 'package:Expenso/home/home_page.dart';
+import 'package:Expenso/dashboard/login_page.dart';
 class LoadingPage extends StatefulWidget {
   @override
   _LoadingPageState createState() => _LoadingPageState();

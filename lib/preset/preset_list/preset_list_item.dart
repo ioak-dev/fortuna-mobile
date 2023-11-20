@@ -1,7 +1,7 @@
-import 'package:endurance/bloc/activity_bloc.dart';
-import 'package:endurance/database/model/activity.dart';
-import 'package:endurance/database/model/preset.dart';
-import 'package:endurance/preset/preset_view/preset_view_page.dart';
+import 'package:Expenso/bloc/activity_bloc.dart';
+import 'package:Expenso/database/model/activity.dart';
+import 'package:Expenso/database/model/preset.dart';
+import 'package:Expenso/preset/preset_view/preset_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:endurance/database/activity_repository.dart';
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/database/model/activity.dart';
+import 'package:Expenso/database/activity_repository.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/database/model/activity.dart';
 import 'package:equatable/equatable.dart';
 
 part 'activity_event.dart';

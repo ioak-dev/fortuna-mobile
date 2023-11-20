@@ -1,5 +1,5 @@
-name: endurance
-description: Endurance
+name: Expenso
+description: Expense Tracker
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,6 +41,11 @@ dependencies:
   http: ^0.13.3
   animated_text_kit: ^4.2.2
   intl: ^0.17.0
+  image_picker: ^0.8.0
+  dependencies:
+  permission_handler: ^11.0.1
+
+
 
 
 

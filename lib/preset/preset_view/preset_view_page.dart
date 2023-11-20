@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:endurance/activity/activity_edit/activity_edit_page.dart';
-import 'package:endurance/activity/activity_list/activity_list.dart';
-import 'package:endurance/bloc/preset_bloc.dart';
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/database/model/preset.dart';
-import 'package:endurance/preset/preset_run/preset_run_page.dart';
+import 'package:Expenso/activity/activity_edit/activity_edit_page.dart';
+import 'package:Expenso/activity/activity_list/activity_list.dart';
+import 'package:Expenso/bloc/preset_bloc.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/database/model/preset.dart';
+import 'package:Expenso/preset/preset_run/preset_run_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,17 +1,17 @@
-import 'package:endurance/activity/activity_edit/activity_edit_page.dart';
-import 'package:endurance/bloc/activity_bloc.dart';
-import 'package:endurance/bloc/preset_bloc.dart';
-import 'package:endurance/preset/preset_create/preset_create_page.dart';
-import 'package:endurance/preset/preset_view/preset_view_page.dart';
+import 'package:Expenso/activity/activity_edit/activity_edit_page.dart';
+import 'package:Expenso/bloc/activity_bloc.dart';
+import 'package:Expenso/bloc/preset_bloc.dart';
+import 'package:Expenso/preset/preset_create/preset_create_page.dart';
+import 'package:Expenso/preset/preset_view/preset_view_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:endurance/home/home_page.dart';
+import 'package:Expenso/home/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:endurance/home/loading.dart';
+import 'package:Expenso/home/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:endurance/theme/ThemeManager.dart';
-import 'package:endurance/theme/Settings_page.dart';
-import 'package:endurance/expnses/Expenses_page.dart';
-import 'package:endurance/total_summary.dart';
+import 'package:Expenso/theme/ThemeManager.dart';
+import 'package:Expenso/theme/Settings_page.dart';
+import 'package:Expenso/expnses/Expenses_page.dart';
+import 'package:Expenso/total_summary.dart';
 
 
 
@@ -37,7 +37,7 @@ class EnduranceApp extends StatelessWidget {
               create: (BuildContext context) => ActivityBloc())
         ],
         child: MaterialApp(
-          title: 'Endurance',
+          title: 'Expenso',
           theme: Provider.of<ThemeManager>(context).themeData,
           darkTheme: Provider.of<ThemeManager>(context).darkThemeData,
           themeMode: Provider.of<ThemeManager>(context).currentThemeMode,

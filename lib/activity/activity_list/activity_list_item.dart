@@ -1,7 +1,7 @@
-import 'package:endurance/activity/activity_edit/activity_edit_page.dart';
-import 'package:endurance/activity/activity_view/activity_view_page.dart';
-import 'package:endurance/database/model/activity.dart';
-import 'package:endurance/shared/utils.dart';
+import 'package:Expenso/activity/activity_edit/activity_edit_page.dart';
+import 'package:Expenso/activity/activity_view/activity_view_page.dart';
+import 'package:Expenso/database/model/activity.dart';
+import 'package:Expenso/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 class ActivityListItem extends StatelessWidget {

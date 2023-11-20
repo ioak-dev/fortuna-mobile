@@ -1,5 +1,5 @@
-import 'package:endurance/database/database_provider.dart';
-import 'package:endurance/database/model/preset.dart';
+import 'package:Expenso/database/database_provider.dart';
+import 'package:Expenso/database/model/preset.dart';
 
 class PresetRepository {
 

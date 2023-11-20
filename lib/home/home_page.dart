@@ -1,10 +1,10 @@
-import 'package:endurance/dashboard/login_page.dart';
-import 'package:endurance/preset/preset_list/preset_list_page.dart';
-import 'package:endurance/dashboard/dashboard_page.dart';
-import 'package:endurance/theme/Settings_page.dart';
+import 'package:Expenso/dashboard/login_page.dart';
+import 'package:Expenso/preset/preset_list/preset_list_page.dart';
+import 'package:Expenso/dashboard/dashboard_page.dart';
+import 'package:Expenso/theme/Settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:endurance/timer/timer_page.dart';
-import 'package:endurance/expnses/Expenses_page.dart';
+import 'package:Expenso/timer/timer_page.dart';
+import 'package:Expenso/expnses/Expenses_page.dart';
 
 import '../total_summary.dart';
 class HomePage extends StatefulWidget {
