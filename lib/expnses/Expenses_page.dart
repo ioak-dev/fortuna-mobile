@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:intl/intl.dart';
 import 'package:Expenso/expnses/add_expense_dialog.dart';
+
+import 'category_icons.dart';
 
 class Expenses {
   final double amount;
@@ -9,6 +13,7 @@ class Expenses {
   final DateTime selectedDate;
   final String notes;
   final String tags;
+  final List<String> categories;
 
   Expenses({
     required this.amount,
@@ -16,6 +21,7 @@ class Expenses {
     required this.notes,
     required this.selectedDate,
     required this.description,
+    this.categories = const [],
   });
 }
 
@@ -32,6 +38,12 @@ class _ExpensePageAppState extends State<ExpensesPage> {
   final List<Expenses> _expenses = [];
 
   void _addExpense(Map result) {
+    List<String> categories = [];
+
+    (result['category'] as List<CategoryIcon>).forEach((CategoryIcon element) {
+      categories.add(element.label);
+    });
+
     setState(() {
       _expenses.add(Expenses(
         amount: result['amount'],
@@ -39,6 +51,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
         selectedDate: result['selectedDate'],
         notes: result['notes'],
         tags: result['tags'],
+        categories: categories,
       ));
     });
   }
@@ -118,28 +131,42 @@ class _ExpensePageAppState extends State<ExpensesPage> {
                 return Card(
                   color: Colors.blueGrey.shade50,
                   elevation: 3,
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
                     title: Text(
                       '${index + 1}. ${expense.description}',
-                      style:  TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade900),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey.shade900),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Spent: ₹${expense.amount.toStringAsFixed(2)}',style: TextStyle(fontSize: 14, color: Colors.lightGreen),),
                         Text(
-                          DateFormat('MMMM dd, yyyy').format(expense.selectedDate),
-                          style: TextStyle(fontSize: 14, color: Colors.blueAccent.shade700),
+                          'Spent: ₹${expense.amount.toStringAsFixed(2)}',
+                          style:
+                              TextStyle(fontSize: 14, color: Colors.lightGreen),
                         ),
+                        Text(
+                          DateFormat('MMMM dd, yyyy')
+                              .format(expense.selectedDate),
+                          style: TextStyle(
+                              fontSize: 14, color: Colors.blueAccent.shade700),
+                        ),
+                        if (expense.categories.isNotEmpty)
+                          Text(expense.categories.toString()),
                         if (expense.description.isNotEmpty)
                           Text(
                             'Description: ${expense.description}',
-                            style: const TextStyle(fontSize: 14, color: Colors.blueGrey),
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.blueGrey),
                           ),
                       ],
                     ),
-                    leading: const Icon(Icons.arrow_right, color: Colors.blue, size: 40),
+                    leading: const Icon(Icons.arrow_right,
+                        color: Colors.blue, size: 40),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {

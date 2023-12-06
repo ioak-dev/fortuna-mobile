@@ -80,11 +80,13 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     tagController.dispose();
     super.dispose();
   }
+
   Future<void> _pickImage() async {
     PermissionStatus status = await Permission.camera.request();
 
     if (status.isGranted) {
-      final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+      final pickedFile =
+          await ImagePicker().getImage(source: ImageSource.camera);
 
       if (pickedFile != null) {
         setState(() {
@@ -94,9 +96,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     } else {
       print('Camera permission denied');
     }
-
-}
-
+  }
 
   // Widget _buildCategoryButton(
   //     String categoryName, Color categoryColor, IconData categoryIcon) {
@@ -119,50 +119,97 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
   //   );
   // }
 
-  List<Widget> categories = [
-    const CategoryIcon(
-      icon: Icons.signal_cellular_alt,
-      label: 'EMI',
-    ),
-    const CategoryIcon(
-      icon: Icons.star,
-      label: 'Entertainment',
-      color: Colors.blue,
-    ),
-    const CategoryIcon(
-      icon: Icons.restaurant,
-      label: 'Food & Drinks',
-      color: Colors.pink,
-    ),
-    const CategoryIcon(
-      icon: Icons.local_gas_station,
-      label: 'Fuel',
-      color: Colors.orange,
-    ),
+  Set<int> selectedIndices = {};
+
+  late List<CategoryIcon> categories = [
     CategoryIcon(
-      icon: Icons.medical_services,
-      label: 'Health',
-      color: Colors.yellow.shade600,
-    ),
-    const CategoryIcon(
-      icon: Icons.more_horiz,
-      label: 'Others',
-    ),
-    const CategoryIcon(
-      icon: Icons.shopping_cart,
-      label: 'Shopping',
-      color: Colors.cyan,
-    ),
-    const CategoryIcon(
-      icon: Icons.work,
-      label: 'Travel',
-      color: Colors.purple,
-    ),
-    const CategoryIcon(
-      icon: Icons.add,
-      label: 'Add category',
-      color: Colors.red,
-    ),
+        icon: Icons.signal_cellular_alt,
+        label: 'EMI',
+        onTap: () {
+          int index = 0;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.star,
+        label: 'Entertainment',
+        color: Colors.blue,
+        onTap: () {
+          int index = 1;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.restaurant,
+        label: 'Food & Drinks',
+        color: Colors.pink,
+        onTap: () {
+          int index = 2;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.local_gas_station,
+        label: 'Fuel',
+        color: Colors.orange,
+        onTap: () {
+          int index = 3;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.medical_services,
+        label: 'Health',
+        color: Colors.yellow.shade600,
+        onTap: () {
+          int index = 4;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.more_horiz,
+        label: 'Others',
+        onTap: () {
+          int index = 5;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.shopping_cart,
+        label: 'Shopping',
+        color: Colors.cyan,
+        onTap: () {
+          int index = 6;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.work,
+        label: 'Travel',
+        color: Colors.purple,
+        onTap: () {
+          int index = 7;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
+    CategoryIcon(
+        icon: Icons.add,
+        label: 'Add category',
+        color: Colors.red,
+        onTap: () {
+          int index = 8;
+          selectedIndices.contains(index)
+              ? selectedIndices.remove(index)
+              : selectedIndices.add(index);
+        }),
   ];
 
   // void sendData(
@@ -206,6 +253,12 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     // String? categoryLabel = categoryName;
 
     if (description.isNotEmpty && amount > 0.0) {
+      List<CategoryIcon> selectedCategories = [];
+
+      selectedIndices.forEach((element) {
+        selectedCategories.add(categories[element]);
+      });
+
       Navigator.of(context).pop({
         'amount': amount,
         'description': description,
@@ -213,6 +266,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
         'notes': notes,
         'tags': tags,
         'image': _selectedImage,
+        'category': selectedCategories,
         // 'categoryLabel': categoryLabel,
       });
     }
