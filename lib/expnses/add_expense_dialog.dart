@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'category_icons.dart';
-import 'switchtile.dart';
 
 class AddExpenseDialog extends StatefulWidget {
   final String? categoryName;
@@ -98,145 +97,51 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     }
   }
 
-  // Widget _buildCategoryButton(
-  //     String categoryName, Color categoryColor, IconData categoryIcon) {
-  //   return Column(
-  //     children: [
-  //       ElevatedButton.icon(
-  //         onPressed: () {
-  //           setState(() {
-  //             this.categoryName = categoryName;
-  //             this.categoryIcon = categoryIcon;
-  //             this.categoryColor = categoryColor;
-  //           });
-  //         },
-  //         icon: Icon(categoryIcon),
-  //         label: Text('$categoryName'),
-  //         style: ElevatedButton.styleFrom(primary: categoryColor),
-  //       ),
-  //       SizedBox(height: 10),
-  //     ],
-  //   );
-  // }
-
-  Set<int> selectedIndices = {};
-
   late List<CategoryIcon> categories = [
+    const CategoryIcon(
+      icon: Icons.signal_cellular_alt,
+      label: 'EMI',
+    ),
+    const CategoryIcon(
+      icon: Icons.star,
+      label: 'Entertainment',
+      color: Colors.blue,
+    ),
+    const CategoryIcon(
+      icon: Icons.restaurant,
+      label: 'Food & Drinks',
+      color: Colors.pink,
+    ),
+    const CategoryIcon(
+      icon: Icons.local_gas_station,
+      label: 'Fuel',
+      color: Colors.orange,
+    ),
     CategoryIcon(
-        icon: Icons.signal_cellular_alt,
-        label: 'EMI',
-        onTap: () {
-          int index = 0;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.star,
-        label: 'Entertainment',
-        color: Colors.blue,
-        onTap: () {
-          int index = 1;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.restaurant,
-        label: 'Food & Drinks',
-        color: Colors.pink,
-        onTap: () {
-          int index = 2;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.local_gas_station,
-        label: 'Fuel',
-        color: Colors.orange,
-        onTap: () {
-          int index = 3;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.medical_services,
-        label: 'Health',
-        color: Colors.yellow.shade600,
-        onTap: () {
-          int index = 4;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.more_horiz,
-        label: 'Others',
-        onTap: () {
-          int index = 5;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.shopping_cart,
-        label: 'Shopping',
-        color: Colors.cyan,
-        onTap: () {
-          int index = 6;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.work,
-        label: 'Travel',
-        color: Colors.purple,
-        onTap: () {
-          int index = 7;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
-    CategoryIcon(
-        icon: Icons.add,
-        label: 'Add category',
-        color: Colors.red,
-        onTap: () {
-          int index = 8;
-          selectedIndices.contains(index)
-              ? selectedIndices.remove(index)
-              : selectedIndices.add(index);
-        }),
+      icon: Icons.medical_services,
+      label: 'Health',
+      color: Colors.yellow.shade600,
+    ),
+    const CategoryIcon(
+      icon: Icons.more_horiz,
+      label: 'Others',
+    ),
+    const CategoryIcon(
+      icon: Icons.shopping_cart,
+      label: 'Shopping',
+      color: Colors.cyan,
+    ),
+    const CategoryIcon(
+      icon: Icons.work,
+      label: 'Travel',
+      color: Colors.purple,
+    ),
+    const CategoryIcon(
+      icon: Icons.add,
+      label: 'Add category',
+      color: Colors.red,
+    ),
   ];
-
-  // void sendData(
-  //     String? categoryName, Color? categoryColor, IconData? categoryIcon) {
-  //   if (hasData(
-  //       titleController.text,
-  //       double.tryParse(amountController.text) ?? 0.0,
-  //       categoryName,
-  //       categoryColor)) {
-  //     Navigator.of(context).pop({
-  //       'title': titleController.text,
-  //       'amount': double.parse(amountController.text),
-  //       'categoryName': categoryName,
-  //       'categoryColor': categoryColor,
-  //       'categoryIcon': categoryIcon,
-  //       'description': descriptionController.text,
-  //       'selectedDate': selectedDate,
-  //     });
-  //   }
-  // }
-
-  // bool hasData(String title, double amount, String? categoryName,
-  //         Color? categoryColor) =>
-  //     title.isNotEmpty &&
-  //     amount > 0 &&
-  //     categoryColor != null &&
-  //     categoryName != null;
 
   bool isCountedInTotalSpends = true;
 
@@ -245,20 +150,15 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     return dateTimeFormatter.format(date);
   }
 
+  int selectedCategoryIndex = -1;
+
   void floatingAction() {
     double amount = double.tryParse(amountController.text) ?? 0.0;
     String description = descriptionController.text;
     String notes = noteController.text;
     String tags = tagController.text;
-    // String? categoryLabel = categoryName;
 
-    if (description.isNotEmpty && amount > 0.0) {
-      List<CategoryIcon> selectedCategories = [];
-
-      selectedIndices.forEach((element) {
-        selectedCategories.add(categories[element]);
-      });
-
+    if (description.isNotEmpty && amount > 0.0 && selectedCategoryIndex >= 0) {
       Navigator.of(context).pop({
         'amount': amount,
         'description': description,
@@ -266,7 +166,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
         'notes': notes,
         'tags': tags,
         'image': _selectedImage,
-        'category': selectedCategories,
+        'category': categories[selectedCategoryIndex],
         // 'categoryLabel': categoryLabel,
       });
     }
@@ -315,10 +215,19 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
                 ),
               ),
               const Divider(),
-              // // TextField(
-              // //   controller: descriptionController, // Add this line
-              // //   decoration: InputDecoration(hintText: 'Description'),
-              // // ),
+              ListTile(
+                leading: const SizedBox(
+                  child: Icon(Icons.notes),
+                ),
+                title: TextField(
+                  controller: noteController,
+                  decoration: const InputDecoration(
+                    hintText: 'Notes',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const Divider(),
               ListTile(
                 leading: const Icon(Icons.calendar_today),
                 title: GestureDetector(
@@ -363,18 +272,33 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
               SizedBox(
                 width: MediaQuery.of(context).size.width * 9 / 10,
                 child: GridView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4),
-                  children: categories,
+                  children: List.generate(
+                    categories.length,
+                    (index) => CategoryIcon(
+                      icon: categories[index].icon,
+                      label: categories[index].label,
+                      color: categories[index].color,
+                      backgroundColor: selectedCategoryIndex == index
+                          ? Colors.grey.shade300
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          selectedCategoryIndex = index;
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.image),
-                title: Text('Add Image'),
+                title: const Text('Add Image'),
                 onTap: () async => await _pickImage(),
               ),
 
@@ -397,36 +321,3 @@ class _AddExpenseDialogState extends State<AddExpenseDialog>
     );
   }
 }
-
-// actions: [
-//     TextButton(
-//       onPressed: () {
-//         Navigator.of(context).pop();
-//       },
-// child: DefaultTextStyle(
-//   style: TextStyle(color: Colors.black),
-//   child: Text('Cancel'),
-// ),
-//     ),
-//     TextButton(
-//       onPressed: () {
-//         String title = titleController.text;
-//         double amount =
-//             double.tryParse(amountController.text) ?? 0.0;
-//         String description = descriptionController.text;
-//
-//         if (title.isNotEmpty && amount > 0) {
-//           Navigator.of(context).pop({
-//             'title': title,
-//             'amount': amount,
-//             'description': descriptionController.text,
-//             'selectedDate': selectedDate,
-//           });
-//         }
-//       },
-//       child: DefaultTextStyle(
-//         style: TextStyle(color: Colors.black), // Set text color here
-//         child: Text('Add'),
-//       ),
-//     ),
-//   ],

@@ -4,14 +4,14 @@ class CategoryIcon extends StatefulWidget {
   final IconData icon;
   final String label;
   final Color? color;
-  final bool selected;
   final Function? onTap;
+  final Color? backgroundColor;
 
   const CategoryIcon({
     required this.icon,
     required this.label,
-    this.selected = false,
     this.color,
+    this.backgroundColor,
     this.onTap,
     super.key,
   });
@@ -21,17 +21,14 @@ class CategoryIcon extends StatefulWidget {
 }
 
 class _CategoryIconState extends State<CategoryIcon> {
-  late bool selected = widget.selected;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => setState(() {
-        selected = !selected;
         widget.onTap?.call();
       }),
       child: Container(
-        color: selected ? Colors.grey.shade200 : null,
+        color: widget.backgroundColor,
         child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,

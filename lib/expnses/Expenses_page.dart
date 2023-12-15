@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:intl/intl.dart';
 import 'package:Expenso/expnses/add_expense_dialog.dart';
 
@@ -13,7 +10,7 @@ class Expenses {
   final DateTime selectedDate;
   final String notes;
   final String tags;
-  final List<String> categories;
+  final CategoryIcon category;
 
   Expenses({
     required this.amount,
@@ -21,7 +18,7 @@ class Expenses {
     required this.notes,
     required this.selectedDate,
     required this.description,
-    this.categories = const [],
+    required this.category,
   });
 }
 
@@ -38,12 +35,6 @@ class _ExpensePageAppState extends State<ExpensesPage> {
   final List<Expenses> _expenses = [];
 
   void _addExpense(Map result) {
-    List<String> categories = [];
-
-    (result['category'] as List<CategoryIcon>).forEach((CategoryIcon element) {
-      categories.add(element.label);
-    });
-
     setState(() {
       _expenses.add(Expenses(
         amount: result['amount'],
@@ -51,7 +42,7 @@ class _ExpensePageAppState extends State<ExpensesPage> {
         selectedDate: result['selectedDate'],
         notes: result['notes'],
         tags: result['tags'],
-        categories: categories,
+        category: result['category'],
       ));
     });
   }
@@ -72,113 +63,165 @@ class _ExpensePageAppState extends State<ExpensesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AddExpenseDialog();
-            },
-          ).then((result) {
-            if (result != null) {
-              print(result);
-              _addExpense(result);
-            }
-          });
-        },
-        label: const Icon(Icons.add, size: 25),
-      ),
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text(''),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(16),
-            child: TyperAnimatedTextKit(
-              text: ['Hi, ${widget.username}!'],
-              textStyle: const TextStyle(
-                color: Colors.lightBlueAccent,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              speed: Duration(milliseconds: 100),
-              isRepeatingAnimation: false,
-            ),
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AddExpenseDialog();
+              },
+            ).then((result) {
+              if (result != null) {
+                print(result);
+                _addExpense(result);
+              }
+            });
+          },
+          label: const Icon(Icons.add, size: 25),
+        ),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(
+            'Hi, ${widget.username}',
+            style: const TextStyle(color: Colors.lightBlueAccent),
           ),
-          SizedBox(height: 20),
-          Center(
-            child: Text(
-              'Total Items: ${_expenses.length}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Center(
-            child: Text(
-              'Total Cost: ₹${_calculateTotalAmount().toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _expenses.length,
-              itemBuilder: (context, index) {
-                final expense = _expenses[index];
-                return Card(
-                  color: Colors.blueGrey.shade50,
-                  elevation: 3,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    title: Text(
-                      '${index + 1}. ${expense.description}',
-                      style: TextStyle(
-                          fontSize: 16,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.filter_alt_sharp),
+              onPressed: () => 0,
+            )
+          ],
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Total spent',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        '₹${_calculateTotalAmount().toStringAsFixed(2)}',
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey.shade900),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Total income',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        '₹0',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.grey.shade300,
+              child: const TabBar(
+                indicatorColor: Colors.black,
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(
+                    child: Text('Transactions'),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const Divider(height: 8),
+                itemCount: _expenses.length,
+                itemBuilder: (context, index) {
+                  final expense = _expenses[index];
+                  return ListTile(
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Spent: ₹${expense.amount.toStringAsFixed(2)}',
-                          style:
-                              TextStyle(fontSize: 14, color: Colors.lightGreen),
-                        ),
-                        Text(
-                          DateFormat('MMMM dd, yyyy')
-                              .format(expense.selectedDate),
-                          style: TextStyle(
-                              fontSize: 14, color: Colors.blueAccent.shade700),
-                        ),
-                        if (expense.categories.isNotEmpty)
-                          Text(expense.categories.toString()),
-                        if (expense.description.isNotEmpty)
-                          Text(
-                            'Description: ${expense.description}',
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.blueGrey),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(4),
+                            ),
                           ),
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            expense.category.icon,
+                            color: expense.category.color,
+                          ),
+                        )
                       ],
                     ),
-                    leading: const Icon(Icons.arrow_right,
-                        color: Colors.blue, size: 40),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        _removeExpenses(index);
-                      },
+                    title: Text(expense.description),
+                    subtitle: Row(
+                      children: [
+                        if (expense.tags.isNotEmpty)
+                          Text(
+                            expense.tags,
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                        Text(
+                          expense.notes,
+                          style: TextStyle(
+                              color: Colors.grey.shade600, fontSize: 12),
+                        ),
+                      ],
                     ),
-                  ),
-                );
-              },
+                    trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              DateFormat("dd MMM ''yy")
+                                  .format(expense.selectedDate),
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            const Icon(
+                              Icons.arrow_outward_rounded,
+                              color: Colors.black,
+                            )
+                          ],
+                        ),
+                        Text(
+                          NumberFormat.currency(locale: 'HI', symbol: '₹')
+                              .format(expense.amount),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
