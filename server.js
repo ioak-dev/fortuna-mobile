@@ -9,7 +9,7 @@ app.post('/api/228/user/auth/signin', (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (username === 'elizabeth.taylor@ioak.org' && password === 'Authlite@123') {
+    if (username == 'elizabeth.taylor@ioak.org' && password == 'Authlite@123') {
       res.status(200).json({ success: true, username });
     } else {
 

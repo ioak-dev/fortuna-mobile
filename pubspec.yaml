@@ -44,18 +44,14 @@ dependencies:
   image_picker: ^0.8.0
   dependencies:
   permission_handler: ^11.0.1
-
-
-
-
-
-
+  fluentui_system_icons: ^1.1.211
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   numberpicker: ^2.1.1
   flutter_colorpicker: ^1.0.3
   wakelock: ^0.6.1+2
+  video_player: ^2.5.0
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +79,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - images/
+  - videos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

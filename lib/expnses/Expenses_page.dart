@@ -61,6 +61,39 @@ class _ExpensePageAppState extends State<ExpensesPage> {
     return total;
   }
 
+  int sortOrder(int order) {
+    if (ascendingSort) return order;
+    return order *= -1;
+  }
+
+  void sortTransactions(FilterOption filterBy) {
+    setState(() {
+      switch (filterBy) {
+        case FilterOption.day:
+          _expenses.sort(
+            (a, b) => sortOrder(a.selectedDate.compareTo(b.selectedDate)),
+          );
+          break;
+        case FilterOption.name:
+          _expenses.sort((a, b) => sortOrder(
+                a.description
+                    .toLowerCase()
+                    .compareTo(b.description.toLowerCase()),
+              ));
+          break;
+        case FilterOption.price:
+          _expenses.sort(
+            (a, b) => sortOrder(a.amount.compareTo(b.amount)),
+          );
+          break;
+      }
+      ascendingSort = !ascendingSort;
+    });
+  }
+
+  FilterOption sortBy = FilterOption.price;
+  bool ascendingSort = true;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -75,7 +108,6 @@ class _ExpensePageAppState extends State<ExpensesPage> {
               },
             ).then((result) {
               if (result != null) {
-                print(result);
                 _addExpense(result);
               }
             });
@@ -89,10 +121,27 @@ class _ExpensePageAppState extends State<ExpensesPage> {
             style: const TextStyle(color: Colors.lightBlueAccent),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.filter_alt_sharp),
-              onPressed: () => 0,
-            )
+            InkWell(
+              borderRadius: BorderRadius.circular(256),
+              child: Ink(
+                padding: const EdgeInsets.all(16),
+                child: const Icon(
+                  Icons.filter_alt_sharp,
+                ),
+              ),
+              onLongPress: () async {
+                FilterOption filterChioce = await showDialog(
+                  context: context,
+                  builder: (context) => FilterDialog(defaultChoice: sortBy),
+                );
+
+                setState(() {
+                  sortBy = filterChioce;
+                  ascendingSort = true;
+                });
+              },
+              onTap: () => sortTransactions(sortBy),
+            ),
           ],
         ),
         body: Column(
@@ -226,3 +275,60 @@ class _ExpensePageAppState extends State<ExpensesPage> {
     );
   }
 }
+
+class FilterDialog extends StatefulWidget {
+  const FilterDialog({super.key, required this.defaultChoice});
+  final FilterOption defaultChoice;
+
+  @override
+  State<FilterDialog> createState() => _FilterDialogState();
+}
+
+class _FilterDialogState extends State<FilterDialog> {
+  late FilterOption selectedOption = widget.defaultChoice;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, selectedOption);
+        return true;
+      },
+      child: SimpleDialog(
+        contentPadding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+        title: const Text('Sort by'),
+        children: [
+          RadioMenuButton(
+              value: FilterOption.day,
+              groupValue: selectedOption,
+              onChanged: (FilterOption? value) => selectOption(value),
+              child: const Text('Day')),
+          RadioMenuButton(
+              value: FilterOption.name,
+              groupValue: selectedOption,
+              onChanged: (FilterOption? value) => selectOption(value),
+              child: const Text('Name')),
+          RadioMenuButton(
+              value: FilterOption.price,
+              groupValue: selectedOption,
+              onChanged: (FilterOption? value) => selectOption(value),
+              child: const Text('Price')),
+        ],
+      ),
+    );
+  }
+
+  selectOption(FilterOption? option) {
+    setState(() {
+      selectedOption = option ?? selectedOption;
+    });
+    Navigator.pop(context, selectedOption);
+  }
+}
+
+enum FilterOption { day, price, name }
